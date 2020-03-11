@@ -46,3 +46,19 @@ python3.8 -m venv env
 source env/bin/activate
 pip install -r requirements.txt
 ```
+
+#### Run Application:
+
+You can run the application with the command below in the project root directory
+
+```
+python manage.py run
+```
+
+#### Test Application:
+
+You can run the unit testes of the application with the command below in the project root directory
+
+```
+python manage.py test
+```
