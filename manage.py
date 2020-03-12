@@ -12,6 +12,8 @@ from project.main import create_app, db
 # values for env are "dev, test, prod"
 app = create_app(os.getenv('PROJECT_ENV') or 'dev')
 app.register_blueprint(blueprint)
+# Disable the mask field, by default X-Fields
+app.config['RESTPLUS_MASK_SWAGGER'] = False
 
 app.app_context().push()
 
