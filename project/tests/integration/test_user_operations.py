@@ -38,7 +38,7 @@ def get_users(self):
 class TestUserController(BaseTestCase):
 
     def test_givenUserEmail_whenCallGet_thenTheUser(self):
-        """ List all registered users"""
+        """ Get a registered user"""
         register_user(self)
         with self.client:
             response = get_a_user(self)
