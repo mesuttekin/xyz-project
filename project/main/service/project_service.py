@@ -2,16 +2,17 @@ import datetime
 
 from project.main import db
 from project.main.model.project import Project
+from project.main.model.project_user import ProjectUser
 
 
-def save_new_project(data):
+def save_new_project(data, user_id):
     project = Project.query.filter_by(name=data['name']).first()
     if not project:
         new_project = Project(
             name=data['name'],
             created_date=datetime.datetime.utcnow()
         )
-        save_changes(new_project)
+        save_changes(new_project, user_id)
         response_object = {
             'status': 'success',
             'message': 'Successfully added.',
@@ -35,8 +36,17 @@ def get_project(project_id):
     return Project.query.filter_by(id=project_id).first()
 
 
-def save_changes(data):
-    db.session.add(data)
+def save_changes(project_data, user_id):
+    db.session.add(project_data)
+    db.session.flush()
+
+    project_user = ProjectUser(
+        user_id=user_id,
+        project_id=project_data.id,
+        project_owner=True
+    )
+
+    db.session.add(project_user)
     db.session.flush()
 
 

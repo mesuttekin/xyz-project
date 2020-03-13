@@ -16,12 +16,13 @@
 * User that have access to a project can see a list of devices.
     * A device can be part of many projects
 
-#### Prerequisites:
+#### Run Application:
 This project is developed with Python. So before start please install Python if you don't have it already
 
 * Python3
 * PIP
 * Virtualenv
+
 For Mac:
 ```
 brew install python3

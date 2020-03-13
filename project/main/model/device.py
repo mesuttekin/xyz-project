@@ -2,7 +2,7 @@ from .. import db
 
 class Device(db.Model):
     """ Device Model for storing device related info """
-    __tablename__ = "devices"
+    __tablename__ = "device"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), nullable=False)

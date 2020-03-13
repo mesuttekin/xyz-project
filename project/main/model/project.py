@@ -2,7 +2,7 @@ from .. import db
 
 class Project(db.Model):
     """ Project Model for storing project related info """
-    __tablename__ = "projects"
+    __tablename__ = "project"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), nullable=False)

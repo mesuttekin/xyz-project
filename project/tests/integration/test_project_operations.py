@@ -57,12 +57,12 @@ class TestUserController(BaseTestCase):
 
     def test_givenNA_whenCallGet_thenGetAllProject(self):
         """ List all projects"""
-        response = add_project(self)
+        add_project(self)
         with self.client:
             response = get_projects(self)
             data = json.loads(response.data.decode())['data']
-            self.assertTrue(len(data) == 1)
-            self.assertTrue(data[0]['name'] == 'test project name')
+            self.assertEqual(1, len(data))
+            self.assertEqual('test project name', data[0]['name'])
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(200, response.status_code)
 
