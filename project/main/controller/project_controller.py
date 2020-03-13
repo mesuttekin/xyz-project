@@ -4,7 +4,7 @@ from flask_restplus import Resource
 from ..dto.project_dto import ProjectDto
 from ..dto.project_user_dto import ProjectUserDto
 from ..service.project_service import get_user_projects, save_new_project, get_project, delete_project
-from ..service.project_user_service import save_new_project_userF, get_project_user, \
+from ..service.project_user_service import save_new_project_user, get_project_user, \
     delete_project_user, get_project_users
 
 api = ProjectDto.api
@@ -32,8 +32,8 @@ class ProjectList(Resource):
     def post(self):
         """Creates a new Project """
         data = request.json
-        # TODO:get user_id from token
-        return save_new_project(data=data, user_id=0)
+        # TODO:get user_email from token
+        return save_new_project(data=data, user_email='ali@ali.com')
 
 
 @api.route('/<project_id>')
@@ -81,7 +81,7 @@ class ProjectUserList(Resource):
         return save_new_project_user(data=data)
 
 
-@api.route('/<project_id>/users/<user_id>')
+@api.route('/<project_id>/users/<user_email>')
 @api.param('project_id', 'The Project Id')
 @api.response(404, 'User not found.')
 class ProjectUser(Resource):
@@ -89,9 +89,9 @@ class ProjectUser(Resource):
              params={'Authorization': {'in': 'header', 'description': 'JWT token'}}
              )
     @api.marshal_with(_project_user)
-    def get(self, project_id, user_id):
+    def get(self, project_id, user_email):
         """get a project user given its id"""
-        project_user = get_project_user(project_id, user_id)
+        project_user = get_project_user(project_id, user_email)
         if not project_user:
             api.abort(404)
         else:
@@ -100,6 +100,6 @@ class ProjectUser(Resource):
     @api.doc('delete a project user',
              params={'Authorization': {'in': 'header', 'description': 'JWT token'}}
              )
-    def delete(self, project_id, user_id):
+    def delete(self, project_id, user_email):
         """delete a project user given its id"""
-        return delete_project_user(project_id, user_id)
+        return delete_project_user(project_id, user_email)

@@ -28,8 +28,7 @@ def add_project(self):
 
 
 project_id = 0
-user_id = 0
-
+user_email = ''
 
 def add_project_user(self):
     response = add_project(self)
@@ -39,14 +38,14 @@ def add_project_user(self):
 
     response = register_user(self)
     data = json.loads(response.data.decode())
-    global user_id
-    user_id = data['user_id']
+    global user_email
+    user_email = data['user_email']
 
     return self.client.post(
         '/projects/' + str(project_id) + '/users',
         data=json.dumps(dict(
             project_id=project_id,
-            user_id=user_id,
+            user_email='ali@gmail.com',
             project_owner=False
         )),
         content_type='application/json'
@@ -57,7 +56,7 @@ def add_second_project_user(self):
         '/projects/' + str(project_id) + '/users',
         data=json.dumps(dict(
             project_id=project_id,
-            user_id=user_id,
+            user_email=user_email,
             project_owner=False
         )),
         content_type='application/json'
@@ -66,14 +65,14 @@ def add_second_project_user(self):
 
 def delete_project_user(self):
     return self.client.delete(
-        '/projects/' + str(project_id) + '/users/' + str(user_id),
+        '/projects/' + str(project_id) + '/users/' + str(user_email),
         content_type='application/json'
     )
 
 
 def get_project_user(self):
     return self.client.get(
-        '/projects/' + str(project_id) + '/users/' + str(user_id),
+        '/projects/' + str(project_id) + '/users/' + str(user_email),
         content_type='application/json'
     )
 
@@ -104,7 +103,7 @@ class TestUserController(BaseTestCase):
             response = get_project_user(self)
             data = json.loads(response.data.decode())
             self.assertEqual(project_id, data['project_id'])
-            self.assertEqual(user_id, data['user_id'])
+            self.assertEqual(user_email, data['user_email'])
             self.assertTrue(data['project_owner']  is False)
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(200, response.status_code)
@@ -117,7 +116,7 @@ class TestUserController(BaseTestCase):
             data = json.loads(response.data.decode())['data']
             self.assertEqual(2, len(data))
             self.assertEqual(project_id, data[1]['project_id'])
-            self.assertEqual(user_id, data[1]['user_id'])
+            self.assertEqual(user_email, data[1]['user_email'])
             self.assertTrue(data[1]['project_owner'] is False)
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(200, response.status_code)

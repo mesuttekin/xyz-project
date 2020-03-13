@@ -63,6 +63,7 @@ def generate_token(user):
             'status': 'success',
             'message': 'Successfully registered.',
             'user_id': user.id,
+            'user_email': user.email,
             'Authorization': auth_token.decode()
 
         }

@@ -5,10 +5,10 @@ from project.main.model.project_user import ProjectUser
 
 
 def save_new_project_user(data):
-    project_user = ProjectUser.query.filter_by(user_id=data['user_id'], project_id=data['project_id']).first()
+    project_user = ProjectUser.query.filter_by(user_email=data['user_email'], project_id=data['project_id']).first()
     if not project_user:
         new_project_user = ProjectUser(
-            user_id=data['user_id'],
+            user_email=data['user_email'],
             project_id=data['project_id'],
             project_owner=data['project_owner']
         )
@@ -33,12 +33,12 @@ def save_changes(project_user):
 def get_project_users(project_id):
     return ProjectUser.query.filter_by(project_id=project_id).all()
 
-def get_project_user(project_id, user_id):
-    return ProjectUser.query.filter_by(project_id=project_id, user_id=user_id).first()
+def get_project_user(project_id, user_email):
+    return ProjectUser.query.filter_by(project_id=project_id, user_email=user_email).first()
 
 
-def delete_project_user(project_id, user_id):
-    project_user = ProjectUser.query.filter_by(project_id=project_id, user_id=user_id).first()
+def delete_project_user(project_id, user_email):
+    project_user = ProjectUser.query.filter_by(project_id=project_id, user_email=user_email).first()
     if project_user:
         delete_project_from_db(project_user)
         response_object = {
