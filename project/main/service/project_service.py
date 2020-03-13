@@ -26,7 +26,7 @@ def save_new_project(data):
         return response_object, 409
 
 
-def get_user_projects(project_id):
+def get_user_projects(user_id):
     # TODO: filter with user_id
     return Project.query.all()
 
