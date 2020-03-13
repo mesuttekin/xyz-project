@@ -22,11 +22,35 @@ This project is developed with Python. So before start please install Python if 
 * Python3
 * PIP
 * Virtualenv
+For Mac:
 ```
 brew install python3
 python3 -m pip install --user --upgrade pip
 python3 -m pip install --user virtualenv
 ```
+
+To clone the project:
+```
+git clone https://github.com/mesuttekin/xyz-reality-project.git
+cd xyz-reality-project
+```
+
+To test and run application:
+```
+make all
+```
+
+To run test: 
+```
+make tests
+```
+
+To run application: 
+```
+make run
+```
+
+
 
 Below python features and extensions are used within the project. 
 * Flask-Bcrypt: A Flask extension that provides bcrypt hashing utilities for your application.
@@ -38,15 +62,10 @@ Below python features and extensions are used within the project.
 * Flask-restplus
 * UnitTest
 
-Please follow below steps to install prerequisites.
-```
-git clone https://github.com/mesuttekin/xyz-reality-project.git
-cd xyz-reality-project
-python3.8 -m venv env
-source env/bin/activate
-pip install -r requirements.txt
-```
 #### Database Models and Migration:
+
+If you want to make any database related changes, please follow below steps.
+
 To perform the migration please run the following commands on the project root directory:
 
 1. Initiate a migration folder using init command for alembic to perform the migrations.
@@ -83,3 +102,4 @@ You can run the unit tests of the application with the command below in the proj
 ```
 python manage.py test
 ```
+
