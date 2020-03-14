@@ -1,7 +1,5 @@
 import json
 
-from project.main.controller.user_controller import User
-from project.main.service.user_service import generate_token
 from project.tests.integration.base import BaseTestCase
 from project.tests.integration.operation_helper import add_project, register_user
 
@@ -28,7 +26,6 @@ def add_project_user(self):
 
 
 def add_non_project_owner_user(self):
-
     response = add_project(self, self.authorization)
     data = json.loads(response.data.decode())
     global project_id

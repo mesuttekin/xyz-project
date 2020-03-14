@@ -3,10 +3,8 @@ import unittest
 
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
-from werkzeug.utils import cached_property
 
 from project import blueprint
-
 from project.main import create_app, db
 
 # values for env are "dev, test, prod"

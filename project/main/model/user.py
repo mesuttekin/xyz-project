@@ -1,4 +1,5 @@
 import datetime
+
 import jwt
 
 from .. import db, flask_bcrypt

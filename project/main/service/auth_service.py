@@ -101,8 +101,8 @@ class Auth:
 
     @staticmethod
     def get_project_owner_user(user_email, project_id):
-        project_user = ProjectUser.query\
-            .filter_by(user_email=user_email, project_id=project_id, project_owner=True)\
+        project_user = ProjectUser.query \
+            .filter_by(user_email=user_email, project_id=project_id, project_owner=True) \
             .first()
         if project_user:
             response_object = {
@@ -121,8 +121,8 @@ class Auth:
 
     @staticmethod
     def get_project_member_user(user_email, project_id):
-        project_user = ProjectUser.query\
-            .filter_by(user_email=user_email, project_id=project_id)\
+        project_user = ProjectUser.query \
+            .filter_by(user_email=user_email, project_id=project_id) \
             .first()
         if project_user:
             response_object = {
@@ -138,4 +138,3 @@ class Auth:
                 'message': 'Provide a valid project member auth token.'
             }
             return response_object, 401
-

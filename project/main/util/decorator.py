@@ -1,4 +1,5 @@
 from functools import wraps
+
 from flask import request
 
 from project.main.service.auth_service import Auth
@@ -8,7 +9,6 @@ from project.main.util.security_level import SecurityLevel
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-
         data, status = Auth.get_logged_in_user(request)
         user = data.get('data')
 
@@ -19,10 +19,10 @@ def token_required(f):
 
     return decorated
 
+
 def project_owner_token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-
         data, status = Auth.get_logged_in_user(
             request,
             security_level=SecurityLevel.Project_Owner,
@@ -38,10 +38,10 @@ def project_owner_token_required(f):
 
     return decorated
 
+
 def project_member_token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-
         data, status = Auth.get_logged_in_user(
             request,
             security_level=SecurityLevel.Project_Member,
@@ -56,5 +56,3 @@ def project_member_token_required(f):
         return f(*args, **kwargs)
 
     return decorated
-
-

@@ -1,5 +1,6 @@
 from .. import db
 
+
 class Project(db.Model):
     """ Project Model for storing project related info """
     __tablename__ = "project"

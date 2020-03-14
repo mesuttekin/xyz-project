@@ -1,5 +1,6 @@
 import json
 
+
 def add_project(self, authorization):
     return self.client.post(
         '/projects/',
@@ -10,6 +11,7 @@ def add_project(self, authorization):
         content_type='application/json'
     )
 
+
 def delete_project(self, project_id, authorization):
     return self.client.delete(
         '/projects/' + str(project_id),
@@ -17,12 +19,14 @@ def delete_project(self, project_id, authorization):
         content_type='application/json'
     )
 
+
 def get_project(self, project_id, authorization):
     return self.client.get(
         '/projects/' + str(project_id),
         headers={'Authorization': authorization},
         content_type='application/json'
     )
+
 
 def get_projects(self, authorization):
     return self.client.get(
@@ -43,6 +47,7 @@ def register_user(self):
         )),
         content_type='application/json'
     )
+
 
 def register_auth_user(self):
     return self.client.post(
@@ -69,6 +74,7 @@ def register_second_user(self):
         content_type='application/json'
     )
 
+
 def delete_user(self, authorization):
     return self.client.delete(
         '/users/ali@gmail.com',
@@ -76,12 +82,14 @@ def delete_user(self, authorization):
         content_type='application/json'
     )
 
+
 def get_a_user(self, authorization):
     return self.client.get(
         '/users/ali@gmail.com',
         headers={'Authorization': authorization},
         content_type='application/json'
     )
+
 
 def get_users(self, authorization):
     return self.client.get(

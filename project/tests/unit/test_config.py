@@ -13,7 +13,8 @@ class TestDevelopmentConfig(TestCase):
         app.config.from_object('project.main.config.DevelopmentConfig')
         return app
 
-    def test_app_is_development(self):
+    def test_givenDevelopAppConfig_whenFromObject_thenAppIsDevelop(self):
+        """Test if app is development """
         self.assertFalse(app.config['SECRET_KEY'] == 'my_secret_key')
         self.assertTrue(app.config['DEBUG'] == True)
         self.assertFalse(current_app is None)
@@ -27,7 +28,8 @@ class TestTestingConfig(TestCase):
         app.config.from_object('project.main.config.TestingConfig')
         return app
 
-    def test_app_is_testing(self):
+    def test_givenTestinfAppConfig_whenFromObject_thenAppIsTesting(self):
+        """Test if app is testing """
         self.assertFalse(app.config['SECRET_KEY'] == 'my_secret_key')
         self.assertTrue(app.config['DEBUG'])
         self.assertTrue(
@@ -40,7 +42,8 @@ class TestProductionConfig(TestCase):
         app.config.from_object('project.main.config.ProductionConfig')
         return app
 
-    def test_app_is_production(self):
+    def test_givenProdAppConfig_whenFromObject_thenAppIsProduction(self):
+        """Test if app is production """
         self.assertTrue(app.config['DEBUG'] is False)
 
 

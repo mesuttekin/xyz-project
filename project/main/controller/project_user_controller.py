@@ -1,15 +1,15 @@
 from flask import request
 from flask_restplus import Resource
 
-
+from .project_controller import api
 from ..dto.project_user_dto import ProjectUserDto
 from ..service.project_user_service import save_new_project_user, get_project_user, \
     delete_project_user, get_project_users
 from ..util.decorator import project_owner_token_required
-from .project_controller import api
 
 api_user = ProjectUserDto.api
 _project_user = ProjectUserDto.user
+
 
 @api.route('/<project_id>/users')
 @api.param('project_id', 'The Project Id')
@@ -24,7 +24,6 @@ class ProjectUserList(Resource):
     def get(self, project_id):
         """List all project user"""
         return get_project_users(project_id)
-
 
     @api.response(201, 'Project User successfully created.')
     @api.doc('create a new project user')
@@ -53,7 +52,6 @@ class ProjectUser(Resource):
             api.abort(404)
         else:
             return project_user
-
 
     @api.doc('delete a project user',
              params={'Authorization': {'in': 'header', 'description': 'JWT token'}}

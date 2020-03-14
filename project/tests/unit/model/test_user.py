@@ -3,7 +3,6 @@ import unittest
 from flask_testing import TestCase
 
 from manage import app
-from project.main.config import basedir
 from project.main.model.user import User
 
 
@@ -12,9 +11,10 @@ class TestUser(TestCase):
         app.config.from_object('project.main.config.TestingConfig')
         return app
 
-    def test_givenUser_when_thenGetUser(self):
+    def test_givenUser_whenAccessParameter_thenGetUser(self):
+        """User Model parameters test """
         actual_user = User(
-            id = "322",
+            id="322",
             email='test@test.com',
             name='Mesut',
             surname='Tekin',
@@ -29,6 +29,7 @@ class TestUser(TestCase):
 
         with self.assertRaises(AttributeError):
             actual_user.password()
+
 
 if __name__ == "__main__":
     unittest.main(exit=False)

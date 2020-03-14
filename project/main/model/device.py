@@ -1,5 +1,6 @@
 from .. import db
 
+
 class Device(db.Model):
     """ Device Model for storing device related info """
     __tablename__ = "device"

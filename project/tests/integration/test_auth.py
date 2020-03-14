@@ -1,7 +1,6 @@
-import unittest
 import json
+import unittest
 
-from project.main import db
 from project.tests.integration.base import BaseTestCase
 
 
@@ -97,6 +96,7 @@ class TestAuthBlueprint(BaseTestCase):
             self.assertTrue(data['status'] == 'success')
             self.assertTrue(data['message'] == 'Successfully logged out.')
             self.assertEqual(response.status_code, 200)
+
 
 if __name__ == '__main__':
     unittest.main()

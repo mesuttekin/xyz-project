@@ -1,17 +1,10 @@
-
 import json
 
-from project.main.service.user_service import generate_token
 from project.tests.integration.base import BaseTestCase
-from project.tests.integration.operation_helper import add_project, get_project, get_projects, delete_project, \
-    register_user
-
-
-
+from project.tests.integration.operation_helper import add_project, get_project, get_projects, delete_project
 
 
 class TestUserController(BaseTestCase):
-
 
     def test_givenProjectData_whenCallPost_thenAddTheProject(self):
         """ Test for add project """
@@ -46,7 +39,7 @@ class TestUserController(BaseTestCase):
             self.assertEqual(200, response.status_code)
 
     def test_givenUnauthorizedUser_whenCallGet_thenReturn401(self):
-        """ List all projects"""
+        """Test unauthorized user to not get a project"""
         add_project(self, self.authorization)
         with self.client:
             response = get_projects(self, "fake_token")
@@ -82,9 +75,9 @@ class TestUserController(BaseTestCase):
         with self.client:
             response = delete_project(self, 'fake_projec_id', self.authorization)
             data = json.loads(response.data.decode())
-            self.assertEqual('fail', data['status'] )
+            self.assertEqual('fail', data['status'])
             self.assertEqual(
-                    'Provide a valid project owner auth token.',
-                    data['message'])
+                'Provide a valid project owner auth token.',
+                data['message'])
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(401, response.status_code)

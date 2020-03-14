@@ -21,7 +21,6 @@ class ProjectList(Resource):
         """List all user's project"""
         return get_user_projects(current_user_email)
 
-
     @api.response(201, 'Project successfully created.')
     @api.doc('create a new project')
     @api.expect(_project, validate=True)
@@ -50,7 +49,6 @@ class Project(Resource):
         else:
             return project
 
-
     @api.doc('delete a project',
              params={'Authorization': {'in': 'header', 'description': 'JWT token'}}
              )
@@ -58,5 +56,3 @@ class Project(Resource):
     def delete(self, project_id):
         """delete a project given its id"""
         return delete_project(project_id)
-
-

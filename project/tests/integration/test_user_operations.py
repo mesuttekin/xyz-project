@@ -1,4 +1,3 @@
-
 import json
 
 from project.tests.integration.base import BaseTestCase

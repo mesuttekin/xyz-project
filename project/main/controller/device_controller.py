@@ -22,7 +22,6 @@ class DeviceList(Resource):
         """List all project devices"""
         return get_project_devices(project_id)
 
-
     @api.response(201, 'Device successfully created.')
     @api.doc('create a new device')
     @api.expect(_device, validate=True)
@@ -50,7 +49,6 @@ class Device(Resource):
             api.abort(404)
         else:
             return device
-
 
     @api.doc('delete a device',
              params={'Authorization': {'in': 'header', 'description': 'JWT token'}}

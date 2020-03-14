@@ -1,8 +1,9 @@
 import json
 
 from flask_testing import TestCase
-from project.main import db
+
 from manage import app
+from project.main import db
 from project.tests.integration.operation_helper import register_auth_user
 
 

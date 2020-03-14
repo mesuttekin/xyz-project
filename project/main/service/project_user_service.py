@@ -1,6 +1,4 @@
-
 from project.main import db
-from project.main.model.project import Project
 from project.main.model.project_user import ProjectUser
 
 
@@ -30,8 +28,10 @@ def save_changes(project_user):
     db.session.add(project_user)
     db.session.flush()
 
+
 def get_project_users(project_id):
     return ProjectUser.query.filter_by(project_id=project_id).all()
+
 
 def get_project_user(project_id, user_email):
     return ProjectUser.query.filter_by(project_id=project_id, user_email=user_email).first()
@@ -44,7 +44,7 @@ def delete_project_user(project_id, user_email):
         response_object = {
             'status': 'success',
             'message': 'Successfully deleted.',
-            'project_user_id':project_user.id
+            'project_user_id': project_user.id
         }
         return response_object, 200
     else:
@@ -58,5 +58,3 @@ def delete_project_user(project_id, user_email):
 def delete_project_from_db(project):
     db.session.delete(project)
     db.session.commit()
-
-

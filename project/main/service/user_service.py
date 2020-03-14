@@ -55,6 +55,7 @@ def delete_user_from_db(user):
     db.session.delete(user)
     db.session.commit()
 
+
 def generate_token(user):
     try:
         # generate the auth token

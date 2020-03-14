@@ -1,4 +1,3 @@
-
 from flask import request
 from flask_restplus import Resource
 
@@ -54,5 +53,3 @@ class User(Resource):
     def delete(self, email, current_user_email):
         """delete a user given its e-mail"""
         return delete_user(email)
-
-

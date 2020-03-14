@@ -1,7 +1,6 @@
 import datetime
 
 from project.main import db
-from project.main.model.project import Project
 from project.main.model.device import Device
 
 

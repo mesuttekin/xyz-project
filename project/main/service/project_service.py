@@ -28,7 +28,6 @@ def save_new_project(data, current_user_email):
 
 
 def get_user_projects(current_user_email):
-
     return Project.query.join(ProjectUser).filter_by(user_email=current_user_email).all()
 
 

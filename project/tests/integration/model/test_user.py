@@ -1,5 +1,4 @@
 import unittest
-import datetime
 
 from project.main import db
 from project.main.model.user import User
@@ -9,7 +8,7 @@ from project.tests.integration.base import BaseTestCase
 class TestUserModel(BaseTestCase):
 
     def test_givenUser_whenUserAdded_thenGetTheUser(self):
-
+        """Add and get a user to DB """
         expected_user = User(
             email='test@test.com',
             name='Mesut',
@@ -24,8 +23,8 @@ class TestUserModel(BaseTestCase):
         self.assertEqual(expected_user.name, actual_user.name)
         self.assertEqual(expected_user.surname, actual_user.surname)
 
-
     def test_givenUserWithPass_whenAddDB_thenEncodeAuthToken(self):
+        """User model encode auth token test """
         user = User(
             email='test@test.com',
             password='test'
@@ -36,6 +35,7 @@ class TestUserModel(BaseTestCase):
         self.assertTrue(isinstance(auth_token, bytes))
 
     def test_givenUserWithPass_whenAddDB_thenDecodeAuthToken(self):
+        """User model decode auth token test """
         user = User(
             email='test@test.com',
             password='test'

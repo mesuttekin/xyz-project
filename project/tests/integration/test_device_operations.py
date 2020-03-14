@@ -1,10 +1,11 @@
-import datetime
 import json
 
 from project.tests.integration.base import BaseTestCase
 from project.tests.integration.operation_helper import add_project
 
 project_id = 0
+
+
 def add_device(self):
     response = add_project(self, self.authorization)
     data = json.loads(response.data.decode())
@@ -21,6 +22,7 @@ def add_device(self):
         content_type='application/json'
     )
 
+
 def add_second_device(self):
     return self.client.post(
         '/projects/' + str(project_id) + '/devices',
@@ -33,8 +35,8 @@ def add_second_device(self):
         content_type='application/json'
     )
 
-def add_device_with_invalid_project_id(self):
 
+def add_device_with_invalid_project_id(self):
     return self.client.post(
         '/projects/' + str(project_id) + '/devices',
         data=json.dumps(dict(
@@ -46,6 +48,7 @@ def add_device_with_invalid_project_id(self):
         content_type='application/json'
     )
 
+
 def delete_device(self, device_id):
     return self.client.delete(
         '/projects/' + str(project_id) + '/devices/' + str(device_id),
@@ -53,12 +56,14 @@ def delete_device(self, device_id):
         content_type='application/json'
     )
 
+
 def get_device(self, device_id):
     return self.client.get(
         '/projects/' + str(project_id) + '/devices/' + str(device_id),
         headers={'Authorization': self.authorization},
         content_type='application/json'
     )
+
 
 def get_devices(self):
     return self.client.get(
@@ -86,7 +91,7 @@ class TestUserController(BaseTestCase):
             response = add_device_with_invalid_project_id(self)
             data = json.loads(response.data.decode())
             self.assertEqual('fail', data['status'])
-            self.assertEqual('Provide a valid project member auth token.', data['message'] )
+            self.assertEqual('Provide a valid project member auth token.', data['message'])
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(401, response.status_code)
 

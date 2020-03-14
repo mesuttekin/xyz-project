@@ -1,9 +1,4 @@
-import datetime
-import jwt
-from sqlalchemy import ForeignKey
-
-from .. import db, flask_bcrypt
-from ..config import key
+from .. import db
 
 
 class ProjectUser(db.Model):
