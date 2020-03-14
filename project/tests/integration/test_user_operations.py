@@ -2,52 +2,8 @@
 import json
 
 from project.tests.integration.base import BaseTestCase
-
-
-def register_user(self):
-    return self.client.post(
-        '/users/',
-        data=json.dumps(dict(
-            email='ali@gmail.com',
-            name='name',
-            surname='surname',
-            password='12345'
-        )),
-        content_type='application/json'
-    )
-
-def register_second_user(self):
-    return self.client.post(
-        '/users/',
-        data=json.dumps(dict(
-            email='mesut@gmail.com',
-            name='name',
-            surname='surname',
-            password='12345'
-        )),
-        content_type='application/json'
-    )
-
-def delete_user(self, authorization):
-    return self.client.delete(
-        '/users/ali@gmail.com',
-        headers={'Authorization': authorization},
-        content_type='application/json'
-    )
-
-def get_a_user(self, authorization):
-    return self.client.get(
-        '/users/ali@gmail.com',
-        headers={'Authorization': authorization},
-        content_type='application/json'
-    )
-
-def get_users(self, authorization):
-    return self.client.get(
-        '/users/',
-        headers={'Authorization': authorization},
-        content_type='application/json'
-    )
+from project.tests.integration.operation_helper import register_user, get_a_user, get_users, delete_user, \
+    register_second_user
 
 
 class TestUserController(BaseTestCase):
@@ -72,10 +28,10 @@ class TestUserController(BaseTestCase):
         with self.client:
             response = get_users(self, data['Authorization'])
             data = json.loads(response.data.decode())['data']
-            self.assertTrue(len(data) == 1)
-            self.assertTrue(data[0]['email'] == 'ali@gmail.com')
-            self.assertTrue(data[0]['name'] == 'name')
-            self.assertTrue(data[0]['surname'] == 'surname')
+            self.assertEqual(2, len(data))
+            self.assertEqual('ali@gmail.com', data[1]['email'])
+            self.assertEqual('name', data[1]['name'])
+            self.assertEqual('surname', data[1]['surname'])
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(200, response.status_code)
 

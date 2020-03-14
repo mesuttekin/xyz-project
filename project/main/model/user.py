@@ -29,7 +29,7 @@ class User(db.Model):
     def __repr__(self):
         return "<User '{}'>".format(self.email)
 
-    def encode_auth_token(self, user_id):
+    def encode_auth_token(self, user_id, user_email):
         """
         Generates the Auth Token
         :return: string
@@ -38,7 +38,8 @@ class User(db.Model):
             payload = {
                 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30),
                 'iat': datetime.datetime.utcnow(),
-                'sub': user_id
+                'user_id': user_id,
+                'user_email': user_email
             }
             return jwt.encode(
                 payload,
@@ -57,7 +58,7 @@ class User(db.Model):
         """
         try:
             payload = jwt.decode(auth_token, key)
-            return payload['sub']
+            return payload
         except jwt.ExpiredSignatureError:
             return 'Signature expired. Please log in again.'
         except jwt.InvalidTokenError:

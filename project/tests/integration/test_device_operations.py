@@ -2,19 +2,11 @@ import datetime
 import json
 
 from project.tests.integration.base import BaseTestCase
-
-def add_project(self):
-    return self.client.post(
-        '/projects/',
-        data=json.dumps(dict(
-            name='test project name'
-        )),
-        content_type='application/json'
-    )
+from project.tests.integration.operation_helper import add_project
 
 project_id = 0
 def add_device(self):
-    response = add_project(self)
+    response = add_project(self, self.authorization)
     data = json.loads(response.data.decode())
     global project_id
     project_id = data['project_id']

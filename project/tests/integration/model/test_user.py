@@ -32,7 +32,7 @@ class TestUserModel(BaseTestCase):
         )
         db.session.add(user)
         db.session.commit()
-        auth_token = user.encode_auth_token(user.id)
+        auth_token = user.encode_auth_token(user.id, user.email)
         self.assertTrue(isinstance(auth_token, bytes))
 
     def test_givenUserWithPass_whenAddDB_thenDecodeAuthToken(self):
@@ -42,9 +42,10 @@ class TestUserModel(BaseTestCase):
         )
         db.session.add(user)
         db.session.commit()
-        auth_token = user.encode_auth_token(user.id)
+        auth_token = user.encode_auth_token(user.id, user.email)
         self.assertTrue(isinstance(auth_token, bytes))
-        self.assertTrue(User.decode_auth_token(auth_token.decode("utf-8") ) == 1)
+        payload = User.decode_auth_token(auth_token.decode("utf-8"))
+        self.assertEqual('test@test.com', payload['user_email'])
 
 
 if __name__ == '__main__':

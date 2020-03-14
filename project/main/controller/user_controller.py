@@ -17,7 +17,7 @@ class UserList(Resource):
              )
     @api.marshal_list_with(_user, envelope='data')
     @token_required
-    def get(self):
+    def get(self, current_user_email):
         """List all registered users"""
         return get_all_users()
 
@@ -39,7 +39,7 @@ class User(Resource):
              )
     @api.marshal_with(_user)
     @token_required
-    def get(self, email):
+    def get(self, email, current_user_email):
         """get a user given its e-mail"""
         user = get_a_user(email)
         if not user:
@@ -51,7 +51,7 @@ class User(Resource):
              params={'Authorization': {'in': 'header', 'description': 'JWT token'}}
              )
     @token_required
-    def delete(self, email):
+    def delete(self, email, current_user_email):
         """delete a user given its e-mail"""
         return delete_user(email)
 

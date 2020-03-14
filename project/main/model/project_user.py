@@ -1,5 +1,6 @@
 import datetime
 import jwt
+from sqlalchemy import ForeignKey
 
 from .. import db, flask_bcrypt
 from ..config import key
@@ -10,6 +11,7 @@ class ProjectUser(db.Model):
     __tablename__ = "project_user"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_email = db.Column(db.String(255))
-    project_id = db.Column(db.Integer, nullable=False)
+    user_email = db.Column(db.String(255), db.ForeignKey('user.email'))
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
     project_owner = db.Column(db.Boolean)
+    project = db.relationship('Project', foreign_keys=project_id)

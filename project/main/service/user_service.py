@@ -58,7 +58,7 @@ def delete_user_from_db(user):
 def generate_token(user):
     try:
         # generate the auth token
-        auth_token = user.encode_auth_token(user.id)
+        auth_token = user.encode_auth_token(user.id, user.email)
         response_object = {
             'status': 'success',
             'message': 'Successfully registered.',
