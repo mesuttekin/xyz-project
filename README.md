@@ -17,41 +17,60 @@
     * A device can be part of many projects
 
 #### Run Application:
-This project is developed with Python. So before start please install Python if you don't have it already
+There are two options to run the application:
+ 
+* Run with docker:
 
-* Python3
-* PIP
-* Virtualenv
+    First clone the project:
+    ```
+    git clone https://github.com/mesuttekin/xyz-reality-project.git
+    cd xyz-reality-project
+    ```
+    
+    Run image build
+    ```
+    docker image build -t xyz-reality-project:latest .
+    ```
+    
+    Run container and 
+    ```
+    docker run -d -p 5000:5000 xyz-reality-project:latest
+    ```
+    And check http://localhost:5000/
+    
+* Run locally:
 
-For Mac:
-```
-brew install python3
-python3 -m pip install --user --upgrade pip
-python3 -m pip install --user virtualenv
-```
-
-To clone the project:
-```
-git clone https://github.com/mesuttekin/xyz-reality-project.git
-cd xyz-reality-project
-```
-
-To test and run application:
-```
-make all
-```
-
-To run test: 
-```
-make tests
-```
-
-To run application: 
-```
-make run
-```
-
-
+    This project is developed with Python. So before start please install Python if you don't have it already
+    
+    * Python3
+    * PIP
+    * Virtualenv
+    
+    For Mac:
+    ```
+    brew install python3
+    python3 -m pip install --user --upgrade pip
+    python3 -m pip install --user virtualenv
+    ```
+    
+    
+    
+    To test and run application:
+    ```
+    make all
+    ```
+    
+    To run test: 
+    ```
+    make tests
+    ```
+    
+    To run application: 
+    ```
+    make run
+    ```
+    
+#### Used python features and extensions:
 
 Below python features and extensions are used within the project. 
 * Flask-Bcrypt: A Flask extension that provides bcrypt hashing utilities for your application.
