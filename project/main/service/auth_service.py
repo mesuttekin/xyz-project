@@ -71,6 +71,8 @@ class Auth:
             if not isinstance(payload, str):
                 if security_level == SecurityLevel.Project_Owner:
                     return Auth.get_project_owner_user(payload['user_email'], project_id)
+                elif security_level == SecurityLevel.Project_Member:
+                    return Auth.get_project_member_user(payload['user_email'], project_id)
                 else:
                     return Auth.get_user(payload['user_id']), 200
             response_object = {
@@ -99,7 +101,9 @@ class Auth:
 
     @staticmethod
     def get_project_owner_user(user_email, project_id):
-        project_user = ProjectUser.query.filter_by(user_email=user_email, project_id=project_id, project_owner=True).first()
+        project_user = ProjectUser.query\
+            .filter_by(user_email=user_email, project_id=project_id, project_owner=True)\
+            .first()
         if project_user:
             response_object = {
                 'status': 'success',
@@ -114,3 +118,24 @@ class Auth:
                 'message': 'Provide a valid project owner auth token.'
             }
             return response_object, 401
+
+    @staticmethod
+    def get_project_member_user(user_email, project_id):
+        project_user = ProjectUser.query\
+            .filter_by(user_email=user_email, project_id=project_id)\
+            .first()
+        if project_user:
+            response_object = {
+                'status': 'success',
+                'data': {
+                    'email': user_email
+                }
+            }
+            return response_object, 200
+        else:
+            response_object = {
+                'status': 'fail',
+                'message': 'Provide a valid project member auth token.'
+            }
+            return response_object, 401
+

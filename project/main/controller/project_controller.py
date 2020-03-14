@@ -3,7 +3,7 @@ from flask_restplus import Resource
 
 from ..dto.project_dto import ProjectDto
 from ..service.project_service import get_user_projects, save_new_project, get_project, delete_project
-from ..util.decorator import token_required
+from ..util.decorator import token_required, project_member_token_required, project_owner_token_required
 
 api = ProjectDto.api
 _project = ProjectDto.user
@@ -41,6 +41,7 @@ class Project(Resource):
              params={'Authorization': {'in': 'header', 'description': 'JWT token'}}
              )
     @api.marshal_with(_project)
+    @project_member_token_required
     def get(self, project_id):
         """get a project given its id"""
         project = get_project(project_id)
@@ -53,6 +54,7 @@ class Project(Resource):
     @api.doc('delete a project',
              params={'Authorization': {'in': 'header', 'description': 'JWT token'}}
              )
+    @project_owner_token_required
     def delete(self, project_id):
         """delete a project given its id"""
         return delete_project(project_id)

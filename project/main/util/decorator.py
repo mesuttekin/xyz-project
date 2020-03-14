@@ -38,4 +38,23 @@ def project_owner_token_required(f):
 
     return decorated
 
+def project_member_token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+
+        data, status = Auth.get_logged_in_user(
+            request,
+            security_level=SecurityLevel.Project_Member,
+            project_id=kwargs['project_id']
+        )
+
+        token = data.get('data')
+
+        if not token:
+            return data, status
+
+        return f(*args, **kwargs)
+
+    return decorated
+
 

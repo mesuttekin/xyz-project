@@ -77,13 +77,14 @@ class TestUserController(BaseTestCase):
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(200, response.status_code)
 
-    def test_givenNonAddedProject_whenCallDelete_thenShouldReturn404(self):
+    def test_givenNonAddedProject_whenCallDelete_thenShouldReturn401(self):
         """ Test delete non added project"""
         with self.client:
             response = delete_project(self, 'fake_projec_id', self.authorization)
             data = json.loads(response.data.decode())
-            self.assertTrue(data['status'] == 'fail')
-            self.assertTrue(
-                data['message'] == 'No project found!')
+            self.assertEqual('fail', data['status'] )
+            self.assertEqual(
+                    'Provide a valid project owner auth token.',
+                    data['message'])
             self.assertTrue(response.content_type == 'application/json')
-            self.assertEqual(404, response.status_code)
+            self.assertEqual(401, response.status_code)

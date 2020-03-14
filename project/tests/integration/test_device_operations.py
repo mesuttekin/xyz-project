@@ -11,54 +11,59 @@ def add_device(self):
     global project_id
     project_id = data['project_id']
     return self.client.post(
-        '/devices/',
+        '/projects/' + str(project_id) + '/devices',
         data=json.dumps(dict(
             name='test device name',
             serial_number='12345',
             project_id=data['project_id']
         )),
+        headers={'Authorization': self.authorization},
         content_type='application/json'
     )
 
 def add_second_device(self):
     return self.client.post(
-        '/devices/',
+        '/projects/' + str(project_id) + '/devices',
         data=json.dumps(dict(
             name='test device name',
             serial_number='12345',
             project_id=project_id
         )),
+        headers={'Authorization': self.authorization},
         content_type='application/json'
     )
 
 def add_device_with_invalid_project_id(self):
 
     return self.client.post(
-        '/devices/',
+        '/projects/' + str(project_id) + '/devices',
         data=json.dumps(dict(
             name='test device name',
             serial_number='12345',
             project_id=0
         )),
+        headers={'Authorization': self.authorization},
         content_type='application/json'
     )
 
 def delete_device(self, device_id):
     return self.client.delete(
-        '/devices/' + str(device_id),
+        '/projects/' + str(project_id) + '/devices/' + str(device_id),
+        headers={'Authorization': self.authorization},
         content_type='application/json'
     )
 
 def get_device(self, device_id):
     return self.client.get(
-        '/devices/' + str(device_id),
+        '/projects/' + str(project_id) + '/devices/' + str(device_id),
+        headers={'Authorization': self.authorization},
         content_type='application/json'
     )
 
-def get_devices(self, project_id):
+def get_devices(self):
     return self.client.get(
-        '/devices/',
-        query_string={'project_id':str(project_id)},
+        '/projects/' + str(project_id) + '/devices',
+        headers={'Authorization': self.authorization},
         content_type='application/json'
     )
 
@@ -70,20 +75,30 @@ class TestUserController(BaseTestCase):
         with self.client:
             response = add_device(self)
             data = json.loads(response.data.decode())
-            self.assertTrue(data['status'] == 'success')
-            self.assertTrue(data['message'] == 'Successfully added.')
+            self.assertEqual('success', data['status'])
+            self.assertEqual('Successfully added.', data['message'])
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(201, response.status_code)
 
-    def test_givenDeviceDataInvalidProjectId_whenCallPost_thenAReturn400(self):
+    def test_givenDeviceDataInvalidProjectId_whenCallPost_thenReturn401(self):
         """ Test for add device with invalid project Id """
         with self.client:
             response = add_device_with_invalid_project_id(self)
             data = json.loads(response.data.decode())
-            self.assertTrue(data['status'] == 'fail')
-            self.assertTrue(data['message'] == 'No project found! Please enter valid project id.')
+            self.assertEqual('fail', data['status'])
+            self.assertEqual('Provide a valid project member auth token.', data['message'] )
             self.assertTrue(response.content_type == 'application/json')
-            self.assertEqual(400, response.status_code)
+            self.assertEqual(401, response.status_code)
+
+    def test_givenNonProjectMemberUser_whenCallPost_thenReturn401(self):
+        """ Test for add device with non member user """
+        with self.client:
+            response = add_device_with_invalid_project_id(self)
+            data = json.loads(response.data.decode())
+            self.assertEqual('fail', data['status'])
+            self.assertEqual('Provide a valid project member auth token.', data['message'])
+            self.assertTrue(response.content_type == 'application/json')
+            self.assertEqual(401, response.status_code)
 
     def test_givenDeviceId_whenCallGet_thenGetTheDevice(self):
         """ Get a device"""
@@ -92,7 +107,7 @@ class TestUserController(BaseTestCase):
         with self.client:
             response = get_device(self, data['device_id'])
             data = json.loads(response.data.decode())
-            self.assertTrue(data['name'] == 'test device name')
+            self.assertEqual('test device name', data['name'])
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(200, response.status_code)
 
@@ -101,10 +116,10 @@ class TestUserController(BaseTestCase):
         response = add_device(self)
         data = json.loads(response.data.decode())
         with self.client:
-            response = get_devices(self, project_id)
+            response = get_devices(self)
             data = json.loads(response.data.decode())['data']
-            self.assertTrue(len(data) == 1)
-            self.assertTrue(data[0]['name'] == 'test device name')
+            self.assertEqual(1, len(data))
+            self.assertEqual('test device name', data[0]['name'])
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(200, response.status_code)
 
@@ -114,9 +129,10 @@ class TestUserController(BaseTestCase):
         with self.client:
             response = add_second_device(self)
             data = json.loads(response.data.decode())
-            self.assertTrue(data['status'] == 'fail')
-            self.assertTrue(
-                data['message'] == 'Device serial number already exists. Please change the serial number.')
+            self.assertEqual('fail', data['status'])
+            self.assertEqual(
+                'Device serial number already exists. Please change the serial number.',
+                data['message'])
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(409, response.status_code)
 
@@ -127,9 +143,10 @@ class TestUserController(BaseTestCase):
         with self.client:
             response = delete_device(self, data['device_id'])
             data = json.loads(response.data.decode())
-            self.assertTrue(data['status'] == 'success')
-            self.assertTrue(
-                data['message'] == 'Successfully deleted.')
+            self.assertEqual('success', data['status'])
+            self.assertEqual(
+                'Successfully deleted.',
+                data['message'])
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(200, response.status_code)
 
@@ -138,8 +155,9 @@ class TestUserController(BaseTestCase):
         with self.client:
             response = delete_device(self, '324234235433453')
             data = json.loads(response.data.decode())
-            self.assertTrue(data['status'] == 'fail')
-            self.assertTrue(
-                data['message'] == 'No device found!')
+            self.assertEqual('fail', data['status'])
+            self.assertEqual(
+                'Provide a valid project member auth token.',
+                data['message'])
             self.assertTrue(response.content_type == 'application/json')
-            self.assertEqual(404, response.status_code)
+            self.assertEqual(401, response.status_code)

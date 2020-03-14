@@ -6,13 +6,6 @@ from project.main.model.device import Device
 
 
 def save_new_device(data):
-    project = Project.query.filter_by(id=data['project_id']).first()
-    if not project:
-        response_object = {
-            'status': 'fail',
-            'message': 'No project found! Please enter valid project id.',
-        }
-        return response_object, 400
     device = Device.query.filter_by(serial_number=data['serial_number']).first()
     if not device:
         new_device = Device(
