@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
+    appgw.ingress.kubernetes.io/backend-path-prefix: "/"
+  name: #{serviceName}#
+
+spec:
+  rules:
+    - host:
+      http:
+        paths:
+          - path:
+            backend:
+              serviceName: #{serviceName}#
+              servicePort: 80

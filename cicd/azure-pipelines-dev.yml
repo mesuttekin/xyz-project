@@ -1,0 +1,65 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  - master
+
+pool:
+  vmImage: 'ubuntu-16.04'
+
+
+variables:
+  serviceName: xyz-reality-project
+  dockerRegistryServiceConnection: docker-registry-service-connection-dev
+  manifestsFolder: kube-manifests
+  kubernetesServiceConnection: kube-service-connection-dev
+  namespace: default
+  tag: $(Build.BuildId)
+
+
+  host: xyz-reality.westeurope.cloudapp.azure.com
+  acr: acrxyzreality.azurecr.io
+  requests.cpu: 250m
+  requests.memory: 1Gi
+  limits.cpu: 500m
+  limits.memory: 2Gi
+
+
+
+steps:
+
+- task: Docker@2
+  displayName: Build and push Docker image
+  inputs:
+    command: 'buildAndPush'
+    Dockerfile: 'Dockerfile'
+    repository: '$(serviceName)'
+    containerRegistry: '$(dockerRegistryServiceConnection)'
+    buildContext: $(Build.SourcesDirectory)
+
+- task: replacetokens@3
+  displayName: Replace parameters in kubernetes manifests
+  inputs:
+    rootDirectory: '$(Build.SourcesDirectory)/$(manifestsFolder)'
+    targetFiles: '**/*.yaml'
+    encoding: 'auto'
+    writeBOM: true
+    actionOnMissing: 'warn'
+    keepToken: false
+    tokenPrefix: '#{'
+    tokenSuffix: '}#'
+
+- task: KubernetesManifest@0
+  displayName: Deploy to AKS
+  inputs:
+    kubernetesServiceConnection: $(kubernetesServiceConnection)
+    namespace: $(namespace)
+    manifests: |
+      $(manifestsFolder)/ingress.yaml
+      $(manifestsFolder)/deployment.yaml
+      $(manifestsFolder)/service.yaml
+
+    containers: |
+      $(serviceName):$(tag)
