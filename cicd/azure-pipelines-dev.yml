@@ -11,7 +11,7 @@ pool:
 
 
 variables:
-  serviceName: xyz-reality-project
+  serviceName: project
   dockerRegistryServiceConnection: docker-registry-service-connection-dev
   manifestsFolder: kube-manifests
   kubernetesServiceConnection: kube-service-connection-dev
