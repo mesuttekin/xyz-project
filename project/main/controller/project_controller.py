@@ -22,7 +22,9 @@ class ProjectList(Resource):
         return get_user_projects(current_user_email)
 
     @api.response(201, 'Project successfully created.')
-    @api.doc('create a new project')
+    @api.doc('create a new project',
+             params={'Authorization': {'in': 'header', 'description': 'JWT token'}}
+             )
     @api.expect(_project, validate=True)
     @token_required
     def post(self, current_user_email):
