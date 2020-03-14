@@ -9,7 +9,7 @@ spec:
   - image: #{acr}#/#{serviceName}#:#{tag}#
     name: #{serviceName}#
     ports:
-    - containerPort: 5000
+    - containerPort: 3000
       protocol: TCP
     resources:
       requests:
