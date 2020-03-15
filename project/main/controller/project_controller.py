@@ -6,7 +6,7 @@ from ..service.project_service import get_user_projects, save_new_project, get_p
 from ..util.decorator import token_required, project_member_token_required, project_owner_token_required
 
 api = ProjectDto.api
-_project = ProjectDto.user
+_project = ProjectDto.project
 
 
 @api.route('/')

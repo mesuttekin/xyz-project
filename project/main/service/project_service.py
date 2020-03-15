@@ -38,6 +38,7 @@ def get_project(project_id):
 def save_changes(project_data, current_user_email):
     db.session.add(project_data)
     db.session.flush()
+    db.session.commit()
 
     project_user = ProjectUser(
         user_email=current_user_email,
@@ -47,6 +48,7 @@ def save_changes(project_data, current_user_email):
 
     db.session.add(project_user)
     db.session.flush()
+    db.session.commit()
 
 
 def delete_project(project_id):

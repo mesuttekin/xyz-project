@@ -4,13 +4,13 @@ from project.main import db
 from project.main.model.device import Device
 
 
-def save_new_device(data):
+def save_new_device(data, project_id):
     device = Device.query.filter_by(serial_number=data['serial_number']).first()
     if not device:
         new_device = Device(
             name=data['name'],
             serial_number=data['serial_number'],
-            project_id=data['project_id'],
+            project_id=project_id,
             created_date=datetime.datetime.utcnow()
         )
         save_changes(new_device)
@@ -40,6 +40,7 @@ def get_device(device_id):
 def save_changes(data):
     db.session.add(data)
     db.session.flush()
+    db.session.commit()
 
 
 def delete_device(device_id):

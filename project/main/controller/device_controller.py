@@ -7,7 +7,7 @@ from ..service.device_service import get_project_devices, save_new_device, get_d
 from ..util.decorator import project_member_token_required
 
 api_device = DeviceDto.api
-_device = DeviceDto.user
+_device = DeviceDto.device
 
 
 @api.route('/<project_id>/devices')
@@ -23,13 +23,15 @@ class DeviceList(Resource):
         return get_project_devices(project_id)
 
     @api.response(201, 'Device successfully created.')
-    @api.doc('create a new device')
+    @api.doc('create a new device',
+             params={'Authorization': {'in': 'header', 'description': 'JWT token'}}
+             )
     @api.expect(_device, validate=True)
     @project_member_token_required
     def post(self, project_id):
         """Creates a new Device """
         device = request.json
-        return save_new_device(data=device)
+        return save_new_device(data=device, project_id=project_id)
 
 
 @api.route('/<project_id>/devices/<device_id>')

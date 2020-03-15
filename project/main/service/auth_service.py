@@ -35,11 +35,8 @@ class Auth:
             return response_object, 500
 
     @staticmethod
-    def logout_user(data):
-        if data:
-            auth_token = data.split(" ")[1]
-        else:
-            auth_token = ''
+    def logout_user(auth_token):
+
         if auth_token:
             resp = User.decode_auth_token(auth_token)
             if not isinstance(resp, str):
@@ -74,7 +71,7 @@ class Auth:
                 elif security_level == SecurityLevel.Project_Member:
                     return Auth.get_project_member_user(payload['user_email'], project_id)
                 else:
-                    return Auth.get_user(payload['user_id']), 200
+                    return Auth.get_user(payload['user_id'])
             response_object = {
                 'status': 'fail',
                 'message': payload
@@ -90,14 +87,21 @@ class Auth:
     @staticmethod
     def get_user(user_id):
         user = User.query.filter_by(id=user_id).first()
-        response_object = {
-            'status': 'success',
-            'data': {
-                'user_id': user.id,
-                'email': user.email
+        if user:
+            response_object = {
+                'status': 'success',
+                'data': {
+                    'user_id': user.id,
+                    'email': user.email
+                }
             }
-        }
-        return response_object
+            return response_object, 200
+        else:
+            response_object = {
+                'status': 'fail',
+                'message': 'No user found!'
+            }
+            return response_object, 404
 
     @staticmethod
     def get_project_owner_user(user_email, project_id):

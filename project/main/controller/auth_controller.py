@@ -28,8 +28,9 @@ class LogoutAPI(Resource):
     Logout Resource
     """
 
-    @api.doc('logout a user')
+    @api.doc('logout a user',
+             params={'Authorization': {'in': 'header', 'description': 'JWT token'}})
     def post(self):
         # get auth token
         auth_header = request.headers.get('Authorization')
-        return Auth.logout_user(data=auth_header)
+        return Auth.logout_user(auth_token=auth_header)

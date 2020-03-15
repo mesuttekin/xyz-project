@@ -8,7 +8,7 @@ from ..service.project_user_service import save_new_project_user, get_project_us
 from ..util.decorator import project_owner_token_required
 
 api_user = ProjectUserDto.api
-_project_user = ProjectUserDto.user
+_project_user = ProjectUserDto.project_user
 
 
 @api.route('/<project_id>/users')
@@ -26,13 +26,15 @@ class ProjectUserList(Resource):
         return get_project_users(project_id)
 
     @api.response(201, 'Project User successfully created.')
-    @api.doc('create a new project user')
+    @api.doc('create a new project user',
+             params={'Authorization': {'in': 'header', 'description': 'JWT token'}}
+             )
     @api.expect(_project_user, validate=True)
     @project_owner_token_required
     def post(self, project_id):
         """Creates a new Project User """
         data = request.json
-        return save_new_project_user(data=data)
+        return save_new_project_user(data=data, project_id=project_id)
 
 
 @api.route('/<project_id>/users/<user_email>')

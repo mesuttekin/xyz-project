@@ -2,12 +2,12 @@ from project.main import db
 from project.main.model.project_user import ProjectUser
 
 
-def save_new_project_user(data):
-    project_user = ProjectUser.query.filter_by(user_email=data['user_email'], project_id=data['project_id']).first()
+def save_new_project_user(data, project_id):
+    project_user = ProjectUser.query.filter_by(user_email=data['user_email'], project_id=project_id).first()
     if not project_user:
         new_project_user = ProjectUser(
             user_email=data['user_email'],
-            project_id=data['project_id'],
+            project_id=project_id,
             project_owner=data['project_owner']
         )
         save_changes(new_project_user)
@@ -27,6 +27,7 @@ def save_new_project_user(data):
 def save_changes(project_user):
     db.session.add(project_user)
     db.session.flush()
+    db.session.commit()
 
 
 def get_project_users(project_id):

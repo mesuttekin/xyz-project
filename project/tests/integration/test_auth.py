@@ -30,7 +30,7 @@ def login_user(self):
 
 class TestAuthBlueprint(BaseTestCase):
 
-    def test_registered_user_login(self):
+    def test_givenRegisteredUser_whenLogin_thenLoginSuccessfully(self):
         """ Test for login of registered-user login """
         with self.client:
             # user registration
@@ -52,7 +52,7 @@ class TestAuthBlueprint(BaseTestCase):
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(response.status_code, 200)
 
-    def test_non_registered_user_login(self):
+    def test_givenNonRegisteredUser_whenLogin_thenReturn401(self):
         """ Test for login of non-registered user """
         with self.client:
             response = login_user(self)
@@ -63,7 +63,7 @@ class TestAuthBlueprint(BaseTestCase):
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(response.status_code, 401)
 
-    def test_valid_logout(self):
+    def test_givenValidToken_whenLogin_thenLogoutSuccessfully(self):
         """ Test for logout before token expires """
         with self.client:
             # user registration
@@ -87,7 +87,7 @@ class TestAuthBlueprint(BaseTestCase):
             response = self.client.post(
                 '/auth/logout',
                 headers=dict(
-                    Authorization='Bearer ' + json.loads(
+                    Authorization=json.loads(
                         resp_login.data.decode()
                     )['Authorization']
                 )
