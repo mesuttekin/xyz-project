@@ -97,3 +97,15 @@ def get_users(self, authorization):
         headers={'Authorization': authorization},
         content_type='application/json'
     )
+
+def add_device(self):
+    return self.client.post(
+        '/devices/',
+        data=json.dumps(dict(
+            name='test device name',
+            serial_number='12345'
+        )),
+        headers={'Authorization': self.authorization},
+        content_type='application/json'
+    )
+

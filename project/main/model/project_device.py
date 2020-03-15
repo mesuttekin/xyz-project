@@ -1,11 +1,11 @@
 from .. import db
 
 
-class Device(db.Model):
+class ProjectDevice(db.Model):
     """ Device Model for storing device related info """
-    __tablename__ = "device"
+    __tablename__ = "project_device"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(50), nullable=False)
-    serial_number = db.Column(db.String(5), nullable=False)
+    project_id = db.Column(db.Integer, nullable=False)
+    device_id = db.Column(db.Integer)
     created_date = db.Column(db.DateTime, nullable=False)

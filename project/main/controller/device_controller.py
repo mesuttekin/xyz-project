@@ -1,50 +1,49 @@
 from flask import request
 from flask_restplus import Resource
 
-from .project_controller import api
 from ..dto.device_dto import DeviceDto
-from ..service.device_service import get_project_devices, save_new_device, get_device, delete_device
-from ..util.decorator import project_member_token_required
+from ..service.device_service import get_devices, save_new_device, get_device, delete_device
+from ..util.decorator import token_required
 
-api_device = DeviceDto.api
+api = DeviceDto.api
 _device = DeviceDto.device
 
 
-@api.route('/<project_id>/devices')
-@api.param('project_id', 'The Project Id')
+@api.route('/')
 class DeviceList(Resource):
+
     @api.doc('list_of_added_device',
              params={'Authorization': {'in': 'header', 'description': 'JWT token'}}
              )
     @api.marshal_list_with(_device, envelope='data')
-    @project_member_token_required
-    def get(self, project_id):
-        """List all project devices"""
-        return get_project_devices(project_id)
+    @token_required
+    def get(self, current_user_email):
+        """List all user's device"""
+        return get_devices(current_user_email)
 
     @api.response(201, 'Device successfully created.')
     @api.doc('create a new device',
              params={'Authorization': {'in': 'header', 'description': 'JWT token'}}
              )
     @api.expect(_device, validate=True)
-    @project_member_token_required
-    def post(self, project_id):
-        """Creates a new Device """
-        device = request.json
-        return save_new_device(data=device, project_id=project_id)
+    @token_required
+    def post(self, current_user_email):
+        """Creates a new Project """
+        data = request.json
+        return save_new_device(data=data, current_user_email=current_user_email)
 
 
-@api.route('/<project_id>/devices/<device_id>')
+@api.route('/<device_id>')
 @api.param('device_id', 'The Device Id')
 @api.response(404, 'Device not found.')
-@api.param('project_id', 'The Project Id')
 class Device(Resource):
+
     @api.doc('get a device',
              params={'Authorization': {'in': 'header', 'description': 'JWT token'}}
              )
     @api.marshal_with(_device)
-    @project_member_token_required
-    def get(self, project_id, device_id):
+    @token_required
+    def get(self, device_id, current_user_email):
         """get a device given its id"""
         device = get_device(device_id)
         if not device:
@@ -55,7 +54,7 @@ class Device(Resource):
     @api.doc('delete a device',
              params={'Authorization': {'in': 'header', 'description': 'JWT token'}}
              )
-    @project_member_token_required
-    def delete(self, project_id, device_id):
+    @token_required
+    def delete(self, device_id, current_user_email):
         """delete a device given its id"""
         return delete_device(device_id)

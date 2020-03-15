@@ -1,15 +1,16 @@
 import datetime
 
 from project.main import db
-from project.main.model.device import Device
+
+from project.main.model.project_device import ProjectDevice
 
 
-def save_new_device(data, current_user_email):
-    device = Device.query.filter_by(serial_number=data['serial_number']).first()
-    if not device:
-        new_device = Device(
-            name=data['name'],
-            serial_number=data['serial_number'],
+def save_new_project_device(project_device, project_id):
+    _project_device = ProjectDevice.query.filter_by(device_id=project_device['device_id'], project_id=project_id).first()
+    if not _project_device:
+        new_device = ProjectDevice(
+            device_id=project_device['device_id'],
+            project_id=project_id,
             created_date=datetime.datetime.utcnow()
         )
         save_changes(new_device)
@@ -22,18 +23,18 @@ def save_new_device(data, current_user_email):
     else:
         response_object = {
             'status': 'fail',
-            'message': 'Device serial number already exists. Please change the serial number.',
+            'message': 'Device id has already assigned to the project.',
         }
         return response_object, 409
 
 
+def get_project_devices(project_id):
+    # TODO: filter with user_id
+    return ProjectDevice.query.filter_by(project_id=project_id).all()
 
-def get_devices(current_user_email):
-    return Device.query.all()
 
-
-def get_device(device_id):
-    return Device.query.filter_by(id=device_id).first()
+def get_project_device(project_id, device_id):
+    return ProjectDevice.query.filter_by(project_id=project_id, device_id=device_id).first()
 
 
 def save_changes(data):
@@ -42,11 +43,10 @@ def save_changes(data):
     db.session.commit()
 
 
-
-def delete_device(device_id):
-    device = Device.query.filter_by(id=device_id).first()
-    if device:
-        delete_device_from_db(device)
+def delete_project_device(project_device_id):
+    project_device = ProjectDevice.query.filter_by(id=project_device_id).first()
+    if project_device:
+        delete_device_from_db(project_device)
         response_object = {
             'status': 'success',
             'message': 'Successfully deleted.'

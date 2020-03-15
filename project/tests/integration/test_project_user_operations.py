@@ -102,7 +102,6 @@ class TestUserController(BaseTestCase):
         with self.client:
             response = get_project_user(self)
             data = json.loads(response.data.decode())
-            self.assertEqual(project_id, data['project_id'])
             self.assertEqual(current_user_email, data['user_email'])
             self.assertTrue(data['project_owner'] is True)
             self.assertTrue(response.content_type == 'application/json')
