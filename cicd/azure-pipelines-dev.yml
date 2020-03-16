@@ -30,36 +30,36 @@ variables:
 
 steps:
 
-- task: Docker@2
-  displayName: Build and push Docker image
-  inputs:
-    command: 'buildAndPush'
-    Dockerfile: 'Dockerfile'
-    repository: '$(serviceName)'
-    containerRegistry: '$(dockerRegistryServiceConnection)'
-    buildContext: $(Build.SourcesDirectory)
+  - task: Docker@2
+    displayName: Build and push Docker image
+    inputs:
+      command: 'buildAndPush'
+      Dockerfile: 'Dockerfile'
+      repository: '$(serviceName)'
+      containerRegistry: '$(dockerRegistryServiceConnection)'
+      buildContext: $(Build.SourcesDirectory)
 
-- task: replacetokens@3
-  displayName: Replace parameters in kubernetes manifests
-  inputs:
-    rootDirectory: '$(Build.SourcesDirectory)/$(manifestsFolder)'
-    targetFiles: '**/*.yaml'
-    encoding: 'auto'
-    writeBOM: true
-    actionOnMissing: 'warn'
-    keepToken: false
-    tokenPrefix: '#{'
-    tokenSuffix: '}#'
+  - task: replacetokens@3
+    displayName: Replace parameters in kubernetes manifests
+    inputs:
+      rootDirectory: '$(Build.SourcesDirectory)/$(manifestsFolder)'
+      targetFiles: '**/*.yaml'
+      encoding: 'auto'
+      writeBOM: true
+      actionOnMissing: 'warn'
+      keepToken: false
+      tokenPrefix: '#{'
+      tokenSuffix: '}#'
 
-- task: KubernetesManifest@0
-  displayName: Deploy to AKS
-  inputs:
-    kubernetesServiceConnection: $(kubernetesServiceConnection)
-    namespace: $(namespace)
-    manifests: |
-      $(manifestsFolder)/ingress.yaml
-      $(manifestsFolder)/deployment.yaml
-      $(manifestsFolder)/service.yaml
+  - task: KubernetesManifest@0
+    displayName: Deploy to AKS
+    inputs:
+      kubernetesServiceConnection: $(kubernetesServiceConnection)
+      namespace: $(namespace)
+      manifests: |
+        $(manifestsFolder)/ingress.yaml
+        $(manifestsFolder)/deployment.yaml
+        $(manifestsFolder)/service.yaml
 
-    containers: |
-      $(serviceName):$(tag)
+      containers: |
+        $(serviceName):$(tag)

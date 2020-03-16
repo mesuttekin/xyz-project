@@ -27,7 +27,6 @@ def save_new_device(data, current_user_email):
         return response_object, 409
 
 
-
 def get_devices(current_user_email):
     return Device.query.all()
 
@@ -40,7 +39,6 @@ def save_changes(data):
     db.session.add(data)
     db.session.flush()
     db.session.commit()
-
 
 
 def delete_device(device_id):

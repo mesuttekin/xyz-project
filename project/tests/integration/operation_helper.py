@@ -98,6 +98,7 @@ def get_users(self, authorization):
         content_type='application/json'
     )
 
+
 def add_device(self):
     return self.client.post(
         '/devices/',
@@ -108,4 +109,3 @@ def add_device(self):
         headers={'Authorization': self.authorization},
         content_type='application/json'
     )
-

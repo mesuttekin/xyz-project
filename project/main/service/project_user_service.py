@@ -19,7 +19,7 @@ def save_new_project_user(data, project_id):
     else:
         response_object = {
             'status': 'fail',
-            'message': 'Same user has already assigned to the project.',
+            'message': 'Same user has already added to the project.',
         }
         return response_object, 409
 

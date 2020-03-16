@@ -9,7 +9,6 @@ class UserDto:
                                pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
                                ),
         'name': fields.String(required=True, description='user name'),
-        'surname': fields.String(required=True, description='user surname'),
-        'password': fields.String(required=True, description='user password')
+        'surname': fields.String(required=True, description='user surname')
 
     })

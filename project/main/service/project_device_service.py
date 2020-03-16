@@ -1,12 +1,12 @@
 import datetime
 
 from project.main import db
-
 from project.main.model.project_device import ProjectDevice
 
 
 def save_new_project_device(project_device, project_id):
-    _project_device = ProjectDevice.query.filter_by(device_id=project_device['device_id'], project_id=project_id).first()
+    _project_device = ProjectDevice.query.filter_by(device_id=project_device['device_id'],
+                                                    project_id=project_id).first()
     if not _project_device:
         new_device = ProjectDevice(
             device_id=project_device['device_id'],

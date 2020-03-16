@@ -26,13 +26,13 @@ class ProjectUserList(Resource):
         return get_project_users(project_id)
 
     @api.response(201, 'Project User successfully created.')
-    @api.doc('create a new project user',
+    @api.doc('Add a user to a project',
              params={'Authorization': {'in': 'header', 'description': 'JWT token'}}
              )
     @api.expect(_project_user, validate=True)
     @project_owner_token_required
     def post(self, project_id):
-        """Creates a new Project User """
+        """Add a user to a project """
         data = request.json
         return save_new_project_user(data=data, project_id=project_id)
 

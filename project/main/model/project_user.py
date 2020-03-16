@@ -9,4 +9,3 @@ class ProjectUser(db.Model):
     user_email = db.Column(db.String(255), db.ForeignKey('user.email'))
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
     project_owner = db.Column(db.Boolean)
-    project = db.relationship('Project', foreign_keys=project_id)

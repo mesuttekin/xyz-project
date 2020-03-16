@@ -125,7 +125,7 @@ class TestUserController(BaseTestCase):
             data = json.loads(response.data.decode())
             self.assertEqual('fail', data['status'])
             self.assertEqual(
-                'Same user has already assigned to the project.', data['message'])
+                'Same user has already added to the project.', data['message'])
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(409, response.status_code)
 

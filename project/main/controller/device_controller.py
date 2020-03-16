@@ -12,13 +12,13 @@ _device = DeviceDto.device
 @api.route('/')
 class DeviceList(Resource):
 
-    @api.doc('list_of_added_device',
+    @api.doc('list_of_devices',
              params={'Authorization': {'in': 'header', 'description': 'JWT token'}}
              )
     @api.marshal_list_with(_device, envelope='data')
     @token_required
     def get(self, current_user_email):
-        """List all user's device"""
+        """List all devices"""
         return get_devices(current_user_email)
 
     @api.response(201, 'Device successfully created.')
@@ -28,7 +28,7 @@ class DeviceList(Resource):
     @api.expect(_device, validate=True)
     @token_required
     def post(self, current_user_email):
-        """Creates a new Project """
+        """Creates a new device """
         data = request.json
         return save_new_device(data=data, current_user_email=current_user_email)
 
