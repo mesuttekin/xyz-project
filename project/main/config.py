@@ -15,6 +15,8 @@ class DevelopmentConfig(Config):
     # uncomment the line below to use different database
     # SQLALCHEMY_DATABASE_URI = database_local_base
     DEBUG = True
+    DB_USER = os.getenv('DB_USER', '')
+    DB_PASSWORD = os.getenv('DB_PASSWORD', '')
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'xyz_reality_main.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
