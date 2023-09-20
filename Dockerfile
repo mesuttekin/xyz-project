@@ -1,4 +1,4 @@
-FROM python:3.8.0-slim
+FROM python:3.12.0rc2-slim
 
 COPY . /xyz-reality-project
 WORKDIR /xyz-reality-project
